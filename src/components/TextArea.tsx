@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { Form } from 'react-bootstrap'
 import { SectionType } from '../types.d'
 type Props =
@@ -13,8 +14,8 @@ const getPlaceholder = ({ type, loading }: { type: SectionType, loading?: boolea
 
 export const TextArea: React.FC<Props> = ({ type, loading, value, onChange }) => {
   const styles = type === SectionType.FROM
-    ? commonStyles
-    : { ...commonStyles, backgroundColo: '#f5f5f5' }
+    ? commonStyles as React.CSSProperties
+    : { ...commonStyles, backgroundColor: '#f5f5f5' } as React.CSSProperties
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value)

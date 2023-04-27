@@ -23,3 +23,5 @@ export enum SectionType {
   FROM = 'from',
   TO = 'to'
 }
+
+export type translate = Promise<unknown>

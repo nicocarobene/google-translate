@@ -2,7 +2,18 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  box-sizing: border-box;
   text-align: center;
   justify-content: center;
+  height: 100vh;
 }
 
+.tittle{
+  margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 500px) {
+  .row{
+    flex-direction: column;
+  }
+}

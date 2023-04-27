@@ -7,7 +7,9 @@ import { LanguageSelected } from './components/LanguageSelected'
 import { SectionType } from './types.d'
 import { TextArea } from './components/TextArea'
 import { useDebounce } from './Hook/useDeounce'
-
+import { useEffect } from 'react'
+import getResult from './services/getResult'
+import { Toaster, toast } from 'sonner'
 function App () {
   const {
     fromLanguage,
@@ -22,20 +24,29 @@ function App () {
     setResult
   } = useStore()
 
-  const { debounceValue } = useDebounce(fromText, 300)
+  const debounceValue = useDebounce(fromText, 300)
+
+  useEffect(() => {
+    void getResult({ fromLanguage, toLanguage, text: debounceValue }).then(setResult)
+  }, [debounceValue, fromLanguage, toLanguage])
 
   const handelClipBoard = () => {
-    navigator.clipboard.writeText(result).catch(() => {})
+    // copiar texto result
+    if (result !== undefined) {
+      navigator.clipboard.writeText(result).catch((e) => { console.log(e) })
+      toast.success('copied successfull')
+    }
+    toast.error("Can't copy if you don't write anything")
   }
   const handleSpeak = () => {
-    const utterance = new SpeechSynthesisUtterance(fromText)
+    const utterance = new SpeechSynthesisUtterance(result)
     utterance.lang = VOICE_FORLANGUAGE[toLanguage]
     utterance.rate = 0.9
     speechSynthesis.speak(utterance)
   }
   return (
     <Container>
-      <h2>Google Translate</h2>
+      <h2 className='tittle'>Google Translate</h2>
       <Row>
         <Col >
           <Stack gap={2}>
@@ -82,6 +93,7 @@ function App () {
           </Stack>
         </Col>
       </Row>
+      <Toaster richColors />
     </Container>
   )
 }
